@@ -1,0 +1,40 @@
+HUFFMAN PROJECT - QUICK FIX GUIDE FOR WinError 10061
+======================================================
+
+PROBLEM: "No connection could be made because the target machine actively refused it"
+CAUSE: Sender trying to connect to 127.0.0.1 (localhost) instead of actual receiver IP
+
+IMMEDIATE FIX STEPS:
+
+1. ON RECEIVER LAPTOP (the one that should LISTEN):
+   a) Run: python receiver_gui.py
+   b) Verify it shows: "LINK: LISTENING" and "STATE: LISTENING"
+   c) Run: ipconfig
+   d) COPY the IPv4 Address (example: 10.29.140.181)
+
+2. ON SENDER LAPTOP (the one sending message):
+   a) Run: python sender_gui.py
+   b) CLICK in the "Receiver IPv4" field
+   c) DELETE everything (especially 127.0.0.1)
+   d) PASTE the IPv4 address you copied from receiver
+   e) Enter test message, click Compress, then Transmit
+
+3. FIREWALL SETTINGS (RUN AS ADMINISTRATOR):
+   ON BOTH LAPTOPS, in Admin Command Prompt:
+   netsh advfirewall firewall add rule name="Huffman_Test" dir=in action=allow protocol=TCP localport=5000
+
+4. VERIFY CONNECTIVITY:
+   ON SENDER LAPTOP:
+   ping <RECEIVER_IP>
+   telnet <RECEIVER_IP> 5000  (should show blank screen = success)
+
+IF STILL NOT WORKING:
+- Temporarily disable ALL antivirus/firewall software
+- Ensure both laptops on SAME Wi-Fi network (no VPNs)
+- Start receiver FIRST, then sender
+- Look for error popups in receiver GUI
+
+REMEMBER: 127.0.0.1 ONLY works when sender and receiver are on SAME laptop.
+For different laptops, you MUST use the actual network IP address.
+
+See TEST_CONNECTION.bat for detailed step-by-step instructions.
